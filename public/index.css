@@ -22,6 +22,18 @@ main {
   align-items: center;
 }
 
+.title {
+  font-size: 40px;
+  margin: 0;
+}
+
+.instructions {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  margin-top: 0;
+  text-align: center;
+}
+
 .dice-container {
   display: grid;
   grid-template: auto auto / repeat(5, 1fr);
@@ -54,6 +66,7 @@ main {
     font-size: 1.2rem;
     font-family: 'Karla', sans-serif;
     cursor: pointer;
+    margin: 30px auto 10px auto;
 }
 
 .roll-btn:focus {
