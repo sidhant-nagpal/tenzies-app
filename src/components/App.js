@@ -5,6 +5,16 @@ import {nanoid} from "nanoid"
 export default function App() {
 
     const [dice, setDice] = React.useState(allNewDice())
+    const [tenzies, setTenzies] = React.useState(false)
+
+    React.useEffect(() => {
+        const value = dice[0].value
+        const winCheck = dice.every(die => die.isHeld && die.value === value)
+        if(winCheck) {
+            setTenzies(true)
+            console.log("You Won!")
+        }
+    }, [dice])
 
     function allNewDice() {
         const newDice = []
