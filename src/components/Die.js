@@ -6,9 +6,19 @@ export default function Die(props) {
         backgroundColor: props.isHeld ? "#59E391" : "white"
     }
 
+    function numberOfDots(value) {
+        const dotsElements = []
+        for(let i = 0; i < value; i++) {
+            dotsElements.push(
+                <span className="pip"></span>
+            )
+        }
+        return dotsElements
+    }
+
     return (
         <div className="die-face" style={styles} onClick={props.holdDice}>
-            <h2 className="die-num">{props.value}</h2>
+            {numberOfDots(props.value)}
         </div>
     )
 }

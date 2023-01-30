@@ -7,15 +7,38 @@ export default function App() {
 
     const [dice, setDice] = React.useState(allNewDice())
     const [tenzies, setTenzies] = React.useState(false)
+    const [numOfRolls, setNumOfRolls] = React.useState(0)
+    const [seconds, setSeconds] = React.useState(0)
+    const [minutes, setMinutes] = React.useState(0)
+    const [intervalId, setIntervalId] = React.useState(0)
 
     React.useEffect(() => {
         const value = dice[0].value
         const winCheck = dice.every(die => die.isHeld && die.value === value)
         if(winCheck) {
             setTenzies(true)
-            console.log("You Won!")
+            clearInterval(intervalId)
+            setIntervalId(0)
         }
     }, [dice])
+
+    // React.useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         getTime()
+    //     }, 1000);
+    //     setIntervalId(interval)
+    // }, [])
+
+    function getTime() {
+        setSeconds(prevSec => {
+            if(prevSec === 60) {
+                setMinutes(prevMin => prevMin + 1)
+                return 0
+            } else {
+                return prevSec + 1
+            }
+        })
+    }
 
     function allNewDice() {
         const newDice = []
@@ -30,17 +53,28 @@ export default function App() {
     }
 
     function roll() {
-        tenzies ? 
+        if(!tenzies) {
             setDice(prevDice => prevDice.map(die => {
-                return !die.isHeld ?
-                    {value: Math.ceil(Math.random() * 6), isHeld: false, id: nanoid()} :
-                    die
-            })) :
+                return die.isHeld ?
+                    die :
+                    {value: Math.ceil(Math.random() * 6), isHeld: false, id: nanoid()}
+            }))
+            setNumOfRolls(prevNum => prevNum + 1)
+        } else {
+            setNumOfRolls(0)
             setTenzies(false)
             setDice(allNewDice())
+        }
     }
 
     function hold(id) {
+        if(!intervalId) {
+            const interval = setInterval(() => {
+                getTime()
+            }, 1000);
+            setIntervalId(interval)
+        }
+
         setDice(prevDice => prevDice.map(die => {
             return die.id === id ?
                 {...die, isHeld: !die.isHeld} :
@@ -62,6 +96,9 @@ export default function App() {
             <div className="dice-container">
                 {diceElements}
             </div>
+            <p className="roll-count">
+                Number of Rolls : {numOfRolls} | Time : {minutes}m {seconds}s
+            </p>
             <button className="roll-btn" onClick={roll}>
                 {tenzies ? "New Game" : "Roll"}
             </button>
