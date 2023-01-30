@@ -11,6 +11,9 @@ export default function App() {
     const [seconds, setSeconds] = React.useState(0)
     const [minutes, setMinutes] = React.useState(0)
     const [intervalId, setIntervalId] = React.useState(0)
+    const [bestTime, setBestTime] = React.useState(
+        () => JSON.parse(localStorage.getItem("bestTime")) || 0
+    )
 
     React.useEffect(() => {
         const value = dice[0].value
@@ -19,8 +22,16 @@ export default function App() {
             setTenzies(true)
             clearInterval(intervalId)
             setIntervalId(0)
+            let time = minutes*100 + seconds
+            if(time < bestTime){
+                setBestTime(time)
+            }
         }
     }, [dice])
+
+    React.useEffect(() => {
+        localStorage.setItem("bestTime", JSON.stringify(minutes*100 + seconds))
+    }, [bestTime])
 
     // React.useEffect(() => {
     //     const interval = setInterval(() => {
@@ -116,7 +127,11 @@ export default function App() {
                 <button className="roll-btn" onClick={roll}>
                     {tenzies ? "New Game" : "Roll"}
                 </button>
-                <h4>Best Time : </h4>
+                <div>
+                    {Math.floor(bestTime/100) > 0 ? 
+                    <h4>Best Time : {Math.floor(bestTime/100)}m {bestTime%100}s</h4> : 
+                    <h4>Best Time : {bestTime%100}s</h4>}
+                </div>
             </div>
         </main>
     )
