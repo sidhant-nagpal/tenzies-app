@@ -60,10 +60,18 @@ export default function App() {
                     {value: Math.ceil(Math.random() * 6), isHeld: false, id: nanoid()}
             }))
             setNumOfRolls(prevNum => prevNum + 1)
+            if(!intervalId) {
+                const interval = setInterval(() => {
+                    getTime()
+                }, 1000);
+                setIntervalId(interval)
+            }
         } else {
             setNumOfRolls(0)
             setTenzies(false)
             setDice(allNewDice())
+            setSeconds(0)
+            setMinutes(0)
         }
     }
 
@@ -96,12 +104,20 @@ export default function App() {
             <div className="dice-container">
                 {diceElements}
             </div>
-            <p className="roll-count">
-                Number of Rolls : {numOfRolls} | Time : {minutes}m {seconds}s
-            </p>
-            <button className="roll-btn" onClick={roll}>
-                {tenzies ? "New Game" : "Roll"}
-            </button>
+            <div className="score">
+                <p className="roll-count">Rolls : {numOfRolls}</p>
+                <div className="time">
+                    {minutes ? 
+                    <p>Time : {minutes}m {seconds}s</p> : 
+                    <p>Time : {seconds}s</p>}
+                </div>
+            </div>
+            <div className="btn-best-time">
+                <button className="roll-btn" onClick={roll}>
+                    {tenzies ? "New Game" : "Roll"}
+                </button>
+                <h4>Best Time : </h4>
+            </div>
         </main>
     )
 }
