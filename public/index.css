@@ -91,7 +91,7 @@ main {
 
 .score {
   display: flex;
-  margin: 12px auto 0px auto;
+  margin: 10px auto 0px auto;
 }
 
 .time {

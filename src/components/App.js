@@ -23,7 +23,10 @@ export default function App() {
             clearInterval(intervalId)
             setIntervalId(0)
             let time = minutes*100 + seconds
-            if(time < bestTime){
+            if(bestTime === 0) {
+                setBestTime(time)
+            }
+            else if(time < bestTime){
                 setBestTime(time)
             }
         }
